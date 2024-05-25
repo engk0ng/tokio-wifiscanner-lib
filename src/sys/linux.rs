@@ -9,7 +9,7 @@ pub(crate) async fn scan() -> Result<Vec<Wifi>> {
     let path = env::var_os(PATH_ENV).map_or(path_system.to_string(), |v| {
         format!("{}:{}", v.to_string_lossy().into_owned(), path_system)
     });
-
+    sudo::escalate_if_needed().unwrap();
     let output = Command::new("iw")
         .env(PATH_ENV, path.clone())
         .arg("dev")
